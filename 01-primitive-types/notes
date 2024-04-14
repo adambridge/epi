@@ -1,0 +1,52 @@
+Bitwise operators
+
+unary
++ +ve
+- -ve
+~ bitwise not
+
+binary
+&   and
+|   or
+^   xor
+<<  shift left
+>>  shift right (always signed, no unsigned shift >>>)
+
+
+Two's complement:
+
+100    -4
+101    -3
+110    -2
+111    -1
+000     0
+001     1
+010     2
+011     3
+
+So to find 2's compliment, find 1's compliment and subtract 1.
+Careful: subtracting 1 from a negative looks like adding one.
+
+
+Erase lowest set bit:
+
+x & (x - 1)
+
+x:          0101
+x-1:        0100
+x & x-1:    0100
+
+x:          0110
+x-1:        0101
+x & x-1:    0100
+
+
+Return lowest set bit:
+
+x & ~(x - 1)
+
+x:          0101
+x-1:        0100
+~(x-1):     1011
+x & ~(x-1): 0001
+
