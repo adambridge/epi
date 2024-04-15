@@ -42,3 +42,34 @@ def my_swap_bits(x, i, j):
         return x ^ ith_bit_value ^ jth_bit_value
     
 
+def swap_bits_brutishly(x, i, j):
+    """
+    My interpretation of brute force solution described but not shown
+    1. Use bit masks to extract values of ith and jth bits in x
+    2. Set extracted values
+    If ith bit was 0, set jth bit to zero
+    e.g. x = 0b01001001, i = 1, j = 6
+    set bit 6 to 0
+         x = 0b01001001
+             0b10111111 inverted mask, & with x to set pos 6 to 0
+     result: 0b00001001
+    etc.
+    >>> f"{swap_bits_brutishly(0b01001001, 1, 6):b}"
+    '1011'
+    """
+    ith_bit_mask, jth_bit_mask = 1 << i, 1 << j
+    ith_bit, jth_bit = x & ith_bit_mask, x & jth_bit_mask
+    if ith_bit == 0:
+        # set jth bit to 0
+        x &= ~jth_bit_mask
+    else:
+        # set jth bit to 1
+        x &= jth_bit_mask
+    if jth_bit == 0:
+        # set ith bit to 0
+        x &= ~ith_bit_mask
+    else:
+        # set ith bit to 1
+        x &= ith_bit_mask
+
+
