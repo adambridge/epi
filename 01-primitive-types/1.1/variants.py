@@ -35,3 +35,17 @@ def mod_pow_2(x, n):
     """
     return x ^ 1 << n
 
+
+def is_pow_2(x):
+    """
+    Test if a number is a power of 2
+    Strategy: is a power of 2 if only 1 bit is set,
+    set lowerest set bit to zero, is a power of 2 if result is zero.
+    Set lowest bit to 0: x & (x - 1)
+    >>> is_pow_2(43)
+    False
+    >>> is_pow_2(64)
+    True
+    """
+    return x & (x - 1) == 0
+
