@@ -53,6 +53,10 @@ def swap_bits_brutishly(x, i, j):
          x = 0b01001001
              0b10111111 inverted mask, & with x to set pos 6 to 0
      result: 0b00001001
+    set bit 1 to 1
+         x = 0b00001001 (previous result)
+             0b00000010 inverted mask, | with x to set pos 6 to 0
+     result: 0b00001011
     etc.
     >>> f"{swap_bits_brutishly(0b01001001, 1, 6):b}"
     '1011'
@@ -64,12 +68,39 @@ def swap_bits_brutishly(x, i, j):
         x &= ~jth_bit_mask
     else:
         # set jth bit to 1
-        x &= jth_bit_mask
+        x |= jth_bit_mask
     if jth_bit == 0:
         # set ith bit to 0
         x &= ~ith_bit_mask
     else:
         # set ith bit to 1
-        x &= ith_bit_mask
+        x |= ith_bit_mask
+    return x
+
+
+def swap_bits_thuggishly(x, i, j):
+    """
+    Reimplemention of the book solution without looking at it.
+    As above but only swaps bits if they differ.
+    >>> f"{swap_bits_thuggishly(0b01001001, 1, 6):b}"
+    '1011'
+    """
+    ith_bit_mask, jth_bit_mask = 1 << i, 1 << j
+    ith_bit, jth_bit = x & ith_bit_mask, x & jth_bit_mask
+    if ith_bit == jth_bit:
+        return x
+    else:
+        return x ^ ith_bit_mask ^ jth_bit_mask
+
+def swap_bits_stylishly(x, i, j):
+    """
+    Book solution
+    >>> f"{swap_bits_stylishly(0b01001001, 1, 6):b}"
+    '1011'
+    """
+    if x & 1 << i != x & 1 << j:
+        bit_mask = 1 << i | 1 << j
+        x ^= bit_mask
+    return x
 
 
