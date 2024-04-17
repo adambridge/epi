@@ -31,6 +31,8 @@ def my_swap_bits(x, i, j):
 
     >>> f"{my_swap_bits(0b01001001, 1, 6):b}"
     '1011'
+    >>> f"{my_swap_bits(0b01001001, 0, 6):b}"
+    '1001001'
     """
     ith_bit_value, jth_bit_value = 1 << i, 1 << j
     ith_bit_set, jth_bit_set = x & ith_bit_value == 0, x & jth_bit_value == 0
@@ -60,6 +62,8 @@ def swap_bits_brutishly(x, i, j):
     etc.
     >>> f"{swap_bits_brutishly(0b01001001, 1, 6):b}"
     '1011'
+    >>> f"{swap_bits_brutishly(0b01001001, 0, 6):b}"
+    '1001001'
     """
     ith_bit_mask, jth_bit_mask = 1 << i, 1 << j
     ith_bit, jth_bit = x & ith_bit_mask, x & jth_bit_mask
@@ -84,23 +88,29 @@ def swap_bits_thuggishly(x, i, j):
     As above but only swaps bits if they differ.
     >>> f"{swap_bits_thuggishly(0b01001001, 1, 6):b}"
     '1011'
+    >>> f"{swap_bits_thuggishly(0b01001001, 0, 6):b}"
+    '1001001'
     """
     ith_bit_mask, jth_bit_mask = 1 << i, 1 << j
     ith_bit, jth_bit = x & ith_bit_mask, x & jth_bit_mask
-    if ith_bit == jth_bit:
+    if ith_bit != 0 and jth_bit != 0 or ith_bit == 0 and jth_bit == 0:
         return x
     else:
         return x ^ ith_bit_mask ^ jth_bit_mask
 
+
 def swap_bits_stylishly(x, i, j):
     """
     Book solution
+    Key improvement over mine was to shift extracted bits to LSB position
+    when extracting thus making comparing them easier compared with extracting
+    them in place.
     >>> f"{swap_bits_stylishly(0b01001001, 1, 6):b}"
     '1011'
+    >>> f"{swap_bits_stylishly(0b01001001, 0, 6):b}"
+    '1001001'
     """
-    if x & 1 << i != x & 1 << j:
+    if (x >> i) & 1 != (x >> j) & 1:
         bit_mask = 1 << i | 1 << j
         x ^= bit_mask
     return x
-
-
