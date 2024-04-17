@@ -61,6 +61,7 @@ def cache_reverse_16_bits(x):
     """
     Precomputed cache solution, e.g. divide into 4x 16 bit integers so 2**16 keys in lookup.
     Illustrate here with 2**4 keys to reverse a 16 bit integer.
+    Time complexity is O(n/L) for n chunks of length L
     >>> f"{cache_reverse_16_bits(0b0001010111111011):b}"
     '1101111110101000'
     """
