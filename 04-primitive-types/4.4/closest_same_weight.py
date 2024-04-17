@@ -49,3 +49,19 @@ def my_closest(x):
 
 
 
+def closest(x):
+    """
+    Naive solution of checking each value (as in my_closest()) is slow for some values.
+    Best solution is to swap rightmost differing adjacent bits.
+    My attempt at implementing after reading book solution.
+    >>> f"{my_closest(0b110):b}"
+    '101'
+    """
+    word_size = 64
+    count = bit_count(x)
+    for i in range(word_size):
+        if x >> i & 1 == x >> i + 1 & 1:
+            mask = 1 << i | 1 << i + 1
+            x ^= mask
+            break
+    return x
