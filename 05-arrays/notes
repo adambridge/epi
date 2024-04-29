@@ -1,0 +1,30 @@
+For an array A, how are B = A and C = list(A) different?
+B = A creates a new reference to the same list. id(B) is equal to id(A) - i.e. the same location in memory.
+C = list(A) creates a new list based on it's input, which must be an iterable. If the list elements are objects the new list will refer to those same instances.
+
+copy.copy(A) vs copy.deepcopy(A): copy.copy(A) is a shallow copy meaning it refers to the same elements, with deepcopy the elements are copied as well - you get a new instance of each element.
+
+
+A.sort() vs sorted(A) and A.reverse() vs reversed(A)
+A.sort() and A.reverse() are in place, reversed(A) returns an iterator, sorted(A) returns a copy.
+
+del A[i] removes element at index i (A.remove(x) remmoves the first element equal to x)
+
+Slicing: A[start:stop:step] can be used to create a reversed list: A[::-1], a shallow copy A[:], or a rotated copy: A[k:] + A[:k]
+
+Generally prefer comprehensions over map/filter + lambda for clarity:
+[x**2 for x in range(10) if x % 2 == 0] 
+vs
+map(filter(range(10), lambda x: x**2), lambda x: x % 2 == 0)
+
+Comprehensions can have multiple levels, e.g. the product of two sets:
+>>> [(x,y) for x in ['a','b','c'] for y in [1,2]]
+[('a', 1), ('a', 2), ('b', 1), ('b', 2), ('c', 1), ('c', 2)]
+
+The second comprehension may reference the first, e.g. to to flatten a 2d array:
+Given M = [[1,2],[3,4]]
+>>> [x for row in M for x in row]
+[1,2,3,4]
+
+A nested comprehension can be used to iterate through a 2d array:
+[[x**x for x in row] for row in M]
