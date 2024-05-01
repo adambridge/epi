@@ -63,8 +63,10 @@ def my_partition(array, pivot):
 def partition_1(A, pivot_index):
     """
     My attempt at book solution 1 to check understanding
+
     Brain fart #1: A = smaller + equal + larger will not overwrite the original array, just our reference to it. Instead need to copy it in.
     Brain fart #2: iterating through array want range(len(array)) since range(n) yields 0 to n - 1
+
     >>> A = [2, 1, 0, 2, 1, 0]
     >>> partition_1(A, 1)
     >>> A
@@ -89,12 +91,10 @@ def partition_1(A, pivot_index):
 def partition_2(A, pivot_index):
     """
     My attempt at book solution 2 to check understanding
-    >>> A = [2, 1, 0, 2, 1, 0]
-    >>> partition_2(A, 1)
-    >>> A
-    [0, 0, 1, 1, 2, 2]
+
     Brain fart #1: serious trouble getting inner loop for 2nd pass iteration from back right.
     The trick was that the range is reduced by decreasing the stop index, not increasing the start index.
+
     Brain fart #2: asymmetry between front and back inner loops was hard to grok:
         j in range(i + 1, len(A))   i: 0, j: 1 2 3 4 5
                                     i: 1, j: 2 3 4 5
@@ -102,6 +102,11 @@ def partition_2(A, pivot_index):
         vs
         j in range(i)               i: 5, j: 4 3 2 1 0
              (reversed)             i: 4, j: 3 2 1 0
+
+    >>> A = [2, 1, 0, 2, 1, 0]
+    >>> partition_2(A, 1)
+    >>> A
+    [0, 0, 1, 1, 2, 2]
     """
     pivot = A[pivot_index]
     for i in range(len(A)):
@@ -111,7 +116,63 @@ def partition_2(A, pivot_index):
                 break
     for i in reversed(range(len(A))):
         for j in reversed(range(i)):
+            if A[i] < pivot:
+                break
             if A[j] > pivot:
                 A[i], A[j] = A[j], A[i]
                 break
+
+
+def partition_3(A, pivot_index):
+    """
+    My attempt at book solution 3 to check understanding
+    smaller group: A[:smaller]
+    larger group: A[larger:]
+
+    >>> A = [2, 1, 0, 2, 1, 0]
+    >>> partition_2(A, 1)
+    >>> A
+    [0, 0, 1, 1, 2, 2]
+    """
+    pivot = A[pivot_index]
+    smaller, larger = 0, len(A) - 1
+    for i in range(len(A)):
+        if A[i] < pivot:
+            A[i], A[smaller] = A[smaller], A[i]
+            smaller += 1
+    for i in reversed(range(len(A))):
+        if A[i] < pivot:
+            break
+        if A[i] > pivot:
+            A[i], A[larger] = A[larger], A[i]
+            larger -= 1
+
+
+def partition_4(A, pivot_index):
+    """
+    My attempt at book solution 3 to check understanding
+    smaller group: A[:smaller]
+    equal group: A[smaller:equal]
+    unknown:    A[equal:larger]
+    larger group: A[larger:]
+
+    >>> A = [2, 1, 0, 2, 1, 0]
+    >>> partition_2(A, 1)
+    >>> A
+    [0, 0, 1, 1, 2, 2]
+    """
+    pivot = A[pivot_index]
+    smaller, equal, larger = 0, 0, len(A) - 1
+    for i in range(len(A)):
+        if A[i] < pivot:
+            A[i], A[smaller] = A[smaller], A[i]
+            smaller += 1
+            equal += 1
+        elif A[i] > pivot:
+            A[i], A[larger] = A[larger], A[i]
+            larger -= 1
+        else:
+            A[i], A[equal] = A[equal], A[i]
+            equal += 1
+
 
