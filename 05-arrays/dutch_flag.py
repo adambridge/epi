@@ -129,10 +129,18 @@ def partition_3(A, pivot_index):
     smaller group: A[:smaller]
     larger group: A[larger:]
 
+    Brain fart #1: make sure doctest is using the right function!
+    Brain fart #2: make sure pivot value is what you think it is
+
     >>> A = [2, 1, 0, 2, 1, 0]
-    >>> partition_2(A, 1)
+    >>> partition_3(A, 1)
     >>> A
     [0, 0, 1, 1, 2, 2]
+
+    >>> A = [2,0,1,0,0,0,1,2,1,2,2,1,0,2,1,2,2,1,0]
+    >>> partition_3(A, 2)
+    >>> A
+    [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
     """
     pivot = A[pivot_index]
     smaller, larger = 0, len(A) - 1
@@ -156,23 +164,32 @@ def partition_4(A, pivot_index):
     unknown:    A[equal:larger]
     larger group: A[larger:]
 
+    Brain fart #1: don't go all the way to end of array, stop when no more unknowns
+    Brain fart #2: larger starts off the end of the array.
+    Brain fart #3: related to #2, decrement larger before swap
+    Brain fart #4: check the %&*#$! pivot value!!
+
     >>> A = [2, 1, 0, 2, 1, 0]
-    >>> partition_2(A, 1)
+    >>> partition_4(A, 1)
     >>> A
     [0, 0, 1, 1, 2, 2]
+
+    >>> A = [2,0,1,0,0,0,1,2,1,2,2,1,0,2,1,2,2,1,0]
+    >>> partition_4(A, 2)
+    >>> A
+    [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2]
     """
     pivot = A[pivot_index]
-    smaller, equal, larger = 0, 0, len(A) - 1
-    for i in range(len(A)):
-        if A[i] < pivot:
-            A[i], A[smaller] = A[smaller], A[i]
+    smaller, equal, larger = 0, 0, len(A)
+    while equal != larger:
+        if A[equal] < pivot:
+            A[equal], A[smaller] = A[smaller], A[equal]
             smaller += 1
             equal += 1
-        elif A[i] > pivot:
-            A[i], A[larger] = A[larger], A[i]
+        elif A[equal] > pivot:
             larger -= 1
+            A[equal], A[larger] = A[larger], A[equal]
         else:
-            A[i], A[equal] = A[equal], A[i]
             equal += 1
 
 
