@@ -161,8 +161,12 @@ def partition_4(A, pivot_index):
     My attempt at book solution 3 to check understanding
     smaller group: A[:smaller]
     equal group: A[smaller:equal]
-    unknown:    A[equal:larger]
+    unknown:    A[equal:larger]     (so A[equal] is next unclassifed)
     larger group: A[larger:]
+
+    If less than pivot, swap with first of equal group and increment smaller and equal
+    If equal to pivot, increment equal
+    If more than pivot, swap with last of unknowns and decrement larger
 
     Brain fart #1: don't go all the way to end of array, stop when no more unknowns
     Brain fart #2: larger starts off the end of the array.
