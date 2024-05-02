@@ -37,7 +37,6 @@ def partition_v1(A):
             # swap with last of unclassified and decrement p2
             A[p1], A[p2 - 1] = A[p2 - 1], A[p1]
             p2 -= 1
-            
 
 
 def partition_v2(A):
@@ -76,4 +75,85 @@ def partition_v2(A):
             A[p2], A[p3 - 1] = A[p3 - 1], A[p2]
             p3 -= 1
 
+
+def partition_v3(A):
+    """
+    Array of booleans, reorder so all False come first
+    False group: A[:p0]
+    Unclassified: A[p0:p1]
+    True group: A[p1:]
+
+    >>> A = [True, False, True, True, False]
+    >>> partition_v3(A)
+    >>> A
+    [False, False, True, True, True]
+    """
+    p0, p1 = 0, len(A)
+    while p1 > p0:
+        if A[p0]:
+            # True, swap with last unclassified and decrement p1
+            A[p0], A[p1 - 1] = A[p1 - 1], A[p0]
+            p1 -= 1
+        else:
+            # False, increment p0
+            p0 += 1
+
+
+class Elem:
+    def __init__(self, boolean, i):
+        self.b = boolean
+        self.i = i
+
+    def __repr__(self):
+        return f"Elem({self.b}, {self.i})"
+
+
+def partition_v4(A):
+    """
+    Array of objects with boolean key, reorder so all False come first
+    preserving the ordering of the True elements
+
+    From: https://stackoverflow.com/questions/29723998/boolean-array-reordering-in-o1-space-and-on-time
+    Keep track of position of last true elem (initially len(A))
+    Starting from back, if elem is true, decrement last_true and swap elem with last_true
+                     i   lt
+    [T1, F2, T3, T4, F5]        F: next elem
+                 i       lt
+    [T1, F2, T3, T4, F5]        T: decrement lt and swap
+                 i   lt
+    [T1, F2, T3, F5, T4]        result of above
+             i       lt
+    [T1, F2, T3, F5, T4]        T: decrement lt and swap
+             i   lt
+    [T1, F2, F5, T3, T4]        result of above
+
+    Only ever swap True with the elem before the last True, which is always False.
+    Since two Trues are never swapped, their order is preserved
+
+    >>> A = [Elem(True, 1), Elem(False, 2), Elem(True, 3), Elem(True, 4), Elem(False, 5)]
+    >>> partition_v4(A)
+    >>> A
+    [Elem(False, 5), Elem(False, 2), Elem(True, 1), Elem(True, 3), Elem(True, 4)]
+    """
+    lt = len(A)
+    for i in reversed(range(len(A))):
+        if A[i].b:
+            lt -= 1
+            A[i], A[lt] = A[lt], A[i]
+
+
+def partition_v3b(A):
+    """
+    v4 imples another (simpler?) solution to v3
+
+    >>> A = [True, False, True, True, False]
+    >>> partition_v3b(A)
+    >>> A
+    [False, False, True, True, True]
+    """
+    lt = -1
+    for i in range(len(A)):
+        if not A[i]:
+            lt += 1
+            A[i], A[lt] = A[lt], A[i]
 
