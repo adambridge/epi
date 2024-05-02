@@ -16,3 +16,22 @@ def my_profit(A):
         if profit > max_profit:
             max_profit = profit
     return max_profit
+
+
+def longest_sub(A):
+    """
+    finds the length of the longest subarray of consecutive ints
+    >>> longest_sub([1,0,0,0,2,3,3,3,3,4])
+    4
+    """
+    prev, length, max_length = A[0], 1, 0
+    for i in range(1, len(A)):
+        if A[i] == prev:
+            length += 1
+        else:
+            if length > max_length:
+                max_length = length
+            length = 1
+        prev = A[i]
+    return max_length
+    
