@@ -55,6 +55,7 @@ def my_iterative_merge(l1, l2):
     """
     # Whichever node comes first will be returned as the head
     # almost duplicate of loop code - how to not repeat?
+    # --> dummy_head!
     if l2 is None or l1.data < l2.data:
         head = l1
         l1 = l1.next
@@ -73,5 +74,29 @@ def my_iterative_merge(l1, l2):
             l2 = l2.next
         tail = tail.next
     return head
+
+
+def better_iterative_merge(l1, l2):
+    """
+    Attempt at merging without recursion
+
+    Use a loop and work through both lists taking the smaller and adding either one.
+
+    >>> l1 = Node(1, Node(3, Node(6)))
+    >>> l2 = Node(2, Node(4, Node(5)))
+    >>> better_iterative_merge(l1, l2)
+    1-2-3-4-5-6
+    """
+    dummy_head = tail = Node(0)
+
+    while l1 or l2:
+        if l2 is None or l1.data < l2.data:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    return dummy_head.next
 
 
