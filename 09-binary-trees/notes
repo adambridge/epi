@@ -1,0 +1,17 @@
+full/perfect/complete binary tree.
+full: every node has two children
+perfect: every row is full (apart from bottom whch is all leaf nodes)
+complete: every row is full apart from (possibly) the last and all nodes are as far left as possible
+
+traversal:
+inorder: left subtree, root, right subtree
+preorder: root, left subtree, right subtree
+postorder: left subtree, right subtree, root
+
+   a        inorder:    d b e a f c g
+ b   c      preorder:   a b d e c f g
+d e f g     postorder:  d e b f g c a
+
+Implemented recursively have O(n) time complexity (for n nodes) and O(h) memory complexity (tree of height h, limited by max stack depth)
+
+
