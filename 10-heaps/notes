@@ -1,0 +1,25 @@
+A heap is a specific kind of binary tree, which is full (every row is filled, except possibly the 
+last in which all elements are as far left as possible) and where the key of every element is 
+greater than those of it's children (the heap property). Max heap supports O(1) lookup of max 
+element, O(log n) insertion, and O(log n) deletion of the max element. Searching for an arbitrary 
+key is O(n). Min heap is the same but for min element. Python implements a min heap in heapq library. 
+For a max-heap multiply all values by -1. 
+heapq.heapify(L)
+heapq.nsmallest(n, h)
+heapq.nlargest(n, h)
+heapq.heappush(h, e) 
+heapq.heappop(h)
+heapq.heappushpop(h, e)
+
+a heapified list:
+index:  0, 1,   2,  3,   4,   5,  6,   7,    8,   9
+key:    8, 373, 76, 457, 445, 98, 234, 1345, 534, 767
+
+children of i are at 2i + 1 and 2i + 2:
+
+                    8
+          373                76
+    457         445     98        234
+1345    534  767
+
+Use a min heap for nlargest so removing smallest is efficient and vice versa.
