@@ -1,0 +1,5 @@
+Inserts, lookups, and deletes are O(1). Keys are stored (optionally with values) in an array at
+locations dictated by hash function. Distributed evenly for well chosen hash function.
+Commonly use linked list at collisions. Assuming hashing is O(1), lookup/insert/delete are actually
+O(1 + n/m) for n keys in array of size m. Can be rehashed O(n + m) when overloaded.
+Keys ideally immutable or have to move values when cheanged.
