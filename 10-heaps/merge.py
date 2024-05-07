@@ -12,6 +12,8 @@ def my_merge(sequences):
     needs to happen once, thereafter removing min and adding new elements are both O(log n)
     
     Brainfart: heapq.heapify(list) is in-place, returns None
+
+    Note: list(heapq.merge(*sorted_arrays)) is how you would actually do this
     """
     ValAndId = namedtuple('ValAndId', ('value', 'id')) # sort order on first attribute: value
 
