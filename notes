@@ -1,0 +1,2 @@
+bisect.bisect_left(A, x) - find first element not less than x
+bisect.bisect_right(A, x) - find first element greater than x
