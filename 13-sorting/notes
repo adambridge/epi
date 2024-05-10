@@ -1,0 +1,8 @@
+Some extra stuff here not from the book to check my recall:
+
+Bubble sort: iterate n times swapping elems until iterate with no swaps (slow: average n^2)
+Insertion sort: partition sorted/unsorted, iterate unsorted once putting each elem in appropriate place (human with deck of cards)
+Selection sort: partition sorted/unsorted, iterate unsorted n times finding min and putting it to front of sorted best choice to minimize swaps
+Merge sort: recursivly divide and conquor into two arrays and merge them (stable) best choice for stable n log n
+Quicksort: recurively divide and conquor into higher and lower than arbitrarily chosen pivot (higher/lower either side of pivot) best choice for average performance
+Heapsort: with complete binary tree, recursively swap parents with childen
