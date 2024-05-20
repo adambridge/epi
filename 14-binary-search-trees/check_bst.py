@@ -119,14 +119,12 @@ def book_check_bst1b(tree):
     #False
     """
     def aggregate_tree(tree, fn):
-        if not tree.left and not tree.right:
-            return tree.data
-        elif not tree.right:
-            return fn([tree.data, aggregate_tree(tree.left, fn)])
-        elif not tree.left:
-            return fn([tree.data, aggregate_tree(tree.right, fn)])
+        if not tree:
+            return tree
         else:
-            return fn([tree.data, aggregate_tree(tree.left, fn), aggregate_tree(tree.right, fn)])
+            return fn([agg for agg in [tree.data,
+                                       aggregate_tree(tree.left, fn),
+                                       aggregate_tree(tree.right, fn)] if agg is not None])
 
     if not tree:
         return True
