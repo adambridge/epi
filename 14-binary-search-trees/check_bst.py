@@ -107,16 +107,16 @@ def book_check_bst1b(tree):
     """
     Third time lucky at simple but inefficient method?
 
-    #>>> book_check_bst1b(Node(5, Node(3), Node(7)))
-    #True
-    #>>> book_check_bst1b(Node(5, Node(6), Node(7)))
-    #False
-    #>>> book_check_bst1b(Node(5, Node(3, Node(1), Node(6)), Node(7)))
-    #False
-    #>>> book_check_bst1b(Node(5, Node(3, Node(1), Node(2)), Node(7)))
-    #False
-    #>>> book_check_bst1b(Node(5, Node(3), Node(7, Node(4))))
-    #False
+    >>> book_check_bst1b(Node(5, Node(3), Node(7)))
+    True
+    >>> book_check_bst1b(Node(5, Node(6), Node(7)))
+    False
+    >>> book_check_bst1b(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    False
+    >>> book_check_bst1b(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    False
+    >>> book_check_bst1b(Node(5, Node(3), Node(7, Node(4))))
+    False
     """
     def aggregate_tree(tree, fn):
         if not tree:
