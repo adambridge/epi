@@ -140,8 +140,21 @@ def simple_check_bst3(tree):
 
 def constraint_check_bst(tree, lower=-inf, upper=inf):
     """
-    Attempt to implement more efficient bst check.
-    Descend recursively accumulating constraints
+    Attempt to implement more efficient bst check accumulating constraints per book description.
+    """
+    if not tree:
+        return True
+    elif tree.data < lower or tree.data > upper:
+        return False
+    else:
+        return (constraint_check_bst(tree.left, lower=lower, upper=min([upper, tree.data]))
+                and constraint_check_bst(tree.right, lower=max([lower, tree.data]), upper=upper))
+
+
+def inorder_traversal_check_bst(tree):
+    """
+    Attempt to implement book inorder traversal bst check
+    Works but global variable is a bit sus
     >>> constraint_check_bst(Node(5, Node(3), Node(7)))
     True
     >>> constraint_check_bst(Node(5, Node(6), Node(7)))
@@ -152,13 +165,27 @@ def constraint_check_bst(tree, lower=-inf, upper=inf):
     False
     >>> constraint_check_bst(Node(5, Node(3), Node(7, Node(4))))
     False
+    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(4)), Node(7)))
+    True
     """
-    if not tree:
+
+    def inorder(tree):
+        if tree:
+            if not inorder(tree.left):
+                return False
+            if globals()["last"] and tree.data < globals()["last"]:
+                return False
+            globals()["last"] = tree.data
+            if not inorder(tree.right):
+                return False
+
         return True
-    elif tree.data < lower or tree.data > upper:
-        return False
-    else:
-        return (constraint_check_bst(tree.left, lower=lower, upper=min([upper, tree.data]))
-                and constraint_check_bst(tree.right, lower=max([lower, tree.data]), upper=upper))
+
+
+    globals()["last"] = None
+    inorder(tree)
+
+
+
 
 
