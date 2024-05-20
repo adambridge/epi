@@ -151,41 +151,41 @@ def constraint_check_bst(tree, lower=-inf, upper=inf):
                 and constraint_check_bst(tree.right, lower=max([lower, tree.data]), upper=upper))
 
 
-def inorder_traversal_check_bst(tree):
+def inorder_traversal_check_bst2(tree):
     """
     Attempt to implement book inorder traversal bst check
-    Works but global variable is a bit sus
-    >>> constraint_check_bst(Node(5, Node(3), Node(7)))
+    >>> inorder_traversal_check_bst2(Node(5, Node(3), Node(7)))
     True
-    >>> constraint_check_bst(Node(5, Node(6), Node(7)))
+    >>> inorder_traversal_check_bst2(Node(5, Node(6), Node(7)))
     False
-    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    >>> inorder_traversal_check_bst2(Node(5, Node(3, Node(1), Node(6)), Node(7)))
     False
-    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    >>> inorder_traversal_check_bst2(Node(5, Node(3, Node(1), Node(2)), Node(7)))
     False
-    >>> constraint_check_bst(Node(5, Node(3), Node(7, Node(4))))
+    >>> inorder_traversal_check_bst2(Node(5, Node(3), Node(7, Node(4))))
     False
-    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(4)), Node(7)))
+    >>> inorder_traversal_check_bst2(Node(5, Node(3, Node(1), Node(4)), Node(7)))
     True
     """
 
-    def inorder(tree):
+    def inorder(tree, last):
         if tree:
-            if not inorder(tree.left):
+            if not inorder(tree.left, last):
                 return False
-            if globals()["last"] and tree.data < globals()["last"]:
+            if last.value and tree.data < last.value:
                 return False
-            globals()["last"] = tree.data
-            if not inorder(tree.right):
+            last.value = tree.data
+            if not inorder(tree.right, last):
                 return False
 
         return True
 
 
-    globals()["last"] = None
-    inorder(tree)
+    class Container():
+        def __init__(self, value=None):
+            self.value = value
 
-
-
+    last = Container()
+    return inorder(tree, last)
 
 
