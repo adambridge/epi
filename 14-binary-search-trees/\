@@ -14,12 +14,12 @@ def my_check_bst(tree):
     Invalid - fails 3rd example
     Check that tree conforms to the BST property
     Last check 
-    #>>> my_check_bst(Node(5, Node(3), Node(7)))
-    #True
-    #>>> my_check_bst(Node(5, Node(6), Node(7)))
-    #False
-    #>>> my_check_bst(Node(5, Node(3, Node(1), Node(6)), Node(7)))
-    #False
+    >>> my_check_bst(Node(5, Node(3), Node(7)))
+    True
+    >>> my_check_bst(Node(5, Node(6), Node(7)))
+    False
+    >>> my_check_bst(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    False
     """
     if not tree:
         return True
@@ -34,12 +34,12 @@ def my_check_bst(tree):
 def book_check_bst1(tree):
     """
     Simple but inefficient method: check max left <= data and max right >= data
-    My attempt for practice (could be prettier?)
-    >>> book_check_bst1(Node(5, Node(3), Node(7)))
+    My attempt for practice
+    >>> my_check_bst(Node(5, Node(3), Node(7)))
     True
-    >>> book_check_bst1(Node(5, Node(6), Node(7)))
+    >>> my_check_bst(Node(5, Node(6), Node(7)))
     False
-    >>> book_check_bst1(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    >>> my_check_bst(Node(5, Node(3, Node(1), Node(6)), Node(7)))
     False
     """
     def tree_max(tree):
@@ -55,7 +55,6 @@ def book_check_bst1(tree):
     if not tree:
         return True
     else:
-        return ((not tree.left or tree_max(tree.left) <= tree.data)
-                and (not tree.right or tree_max(tree.right) >= tree.data))
-
+        return (not tree.left or tree_max(tree.left) <= tree.data
+                and not tree.right or tree_max(tree.right) >= tree.data)
 
