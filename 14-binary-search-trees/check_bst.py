@@ -1,3 +1,5 @@
+from functools import cache
+from numpy import inf
 
 class Node():
     def __init__(self, data, left=None, right=None):
@@ -13,7 +15,7 @@ def my_check_bst(tree):
     """
     Check that tree conforms to the BST property
 
-    Invalid - fails 3rd example
+    Invalid - fails 3rd example since only checks immediate children, not all descendents
 
     #>>> my_check_bst(Node(5, Node(3), Node(7)))
     #True
@@ -32,21 +34,21 @@ def my_check_bst(tree):
         return my_check_bst(tree.left) and my_check_bst(tree.right)
 
 
-def book_check_bst1(tree):
+def simple_check_bst1(tree):
     """
     Simple but inefficient method: check max left <= data and max right >= data
-    My attempt for practice (could be prettier?)
+    My attempt for practice
 
     Also invalid, need to check max of l/r tree is </> data for every subtree
     therefore below fails 4th example
 
-    #>>> book_check_bst1(Node(5, Node(3), Node(7)))
+    #>>> simple_check_bst1(Node(5, Node(3), Node(7)))
     #True
-    #>>> book_check_bst1(Node(5, Node(6), Node(7)))
+    #>>> simple_check_bst1(Node(5, Node(6), Node(7)))
     #False
-    #>>> book_check_bst1(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    #>>> simple_check_bst1(Node(5, Node(3, Node(1), Node(6)), Node(7)))
     #False
-    #>>> book_check_bst1(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    #>>> simple_check_bst1(Node(5, Node(3, Node(1), Node(2)), Node(7)))
     #False
     """
     def tree_max(tree):
@@ -66,7 +68,7 @@ def book_check_bst1(tree):
                 and (not tree.right or tree_max(tree.right) >= tree.data))
 
 
-def book_check_bst1a(tree):
+def simple_check_bst2(tree):
     """
     Second attempt at simple but inefficient method
     Still ugly and inefficent but hopefully now correct
@@ -74,15 +76,15 @@ def book_check_bst1a(tree):
     *Still wrong* - need to check max of left <= data and *min* of right >= data
     5th example fails
 
-    #>>> book_check_bst1a(Node(5, Node(3), Node(7)))
+    #>>> simple_check_bst2(Node(5, Node(3), Node(7)))
     #True
-    #>>> book_check_bst1a(Node(5, Node(6), Node(7)))
+    #>>> simple_check_bst2(Node(5, Node(6), Node(7)))
     #False
-    #>>> book_check_bst1a(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    #>>> simple_check_bst2(Node(5, Node(3, Node(1), Node(6)), Node(7)))
     #False
-    #>>> book_check_bst1a(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    #>>> simple_check_bst2(Node(5, Node(3, Node(1), Node(2)), Node(7)))
     #False
-    #>>> book_check_bst1a(Node(5, Node(3), Node(7, Node(4))))
+    #>>> simple_check_bst2(Node(5, Node(3), Node(7, Node(4))))
     #False
     """
     def tree_max(tree):
@@ -100,24 +102,26 @@ def book_check_bst1a(tree):
     else:
         return ((not tree.left or tree_max(tree.left) <= tree.data)
                 and (not tree.right or tree_max(tree.right) >= tree.data)
-                and book_check_bst1a(tree.left) and book_check_bst1a(tree.right))
+                and simple_check_bst2(tree.left) and book_check_bst1a(tree.right))
 
 
-def book_check_bst1b(tree):
+def simple_check_bst3(tree):
     """
-    Third time lucky at simple but inefficient method?
+    Third time lucky at simple but inefficient method
+    Worst case O(n^2) though caching (functools.cache) gets O(n) at cost O(n) memory
 
-    >>> book_check_bst1b(Node(5, Node(3), Node(7)))
+    >>> simple_check_bst3(Node(5, Node(3), Node(7)))
     True
-    >>> book_check_bst1b(Node(5, Node(6), Node(7)))
+    >>> simple_check_bst3(Node(5, Node(6), Node(7)))
     False
-    >>> book_check_bst1b(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    >>> simple_check_bst3(Node(5, Node(3, Node(1), Node(6)), Node(7)))
     False
-    >>> book_check_bst1b(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    >>> simple_check_bst3(Node(5, Node(3, Node(1), Node(2)), Node(7)))
     False
-    >>> book_check_bst1b(Node(5, Node(3), Node(7, Node(4))))
+    >>> simple_check_bst3(Node(5, Node(3), Node(7, Node(4))))
     False
     """
+    @cache
     def aggregate_tree(tree, fn):
         if not tree:
             return tree
@@ -131,6 +135,30 @@ def book_check_bst1b(tree):
     else:
         return ((not tree.left or aggregate_tree(tree.left, max) <= tree.data)
                 and (not tree.right or aggregate_tree(tree.right, min) >= tree.data)
-                and book_check_bst1b(tree.left) and book_check_bst1b(tree.right))
+                and simple_check_bst3(tree.left) and simple_check_bst3(tree.right))
+
+
+def constraint_check_bst(tree, lower=-inf, upper=inf):
+    """
+    Attempt to implement more efficient bst check.
+    Descend recursively accumulating constraints
+    >>> constraint_check_bst(Node(5, Node(3), Node(7)))
+    True
+    >>> constraint_check_bst(Node(5, Node(6), Node(7)))
+    False
+    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(6)), Node(7)))
+    False
+    >>> constraint_check_bst(Node(5, Node(3, Node(1), Node(2)), Node(7)))
+    False
+    >>> constraint_check_bst(Node(5, Node(3), Node(7, Node(4))))
+    False
+    """
+    if not tree:
+        return True
+    elif tree.data < lower or tree.data > upper:
+        return False
+    else:
+        return (constraint_check_bst(tree.left, lower=lower, upper=min([upper, tree.data]))
+                and constraint_check_bst(tree.right, lower=max([lower, tree.data]), upper=upper))
 
 
